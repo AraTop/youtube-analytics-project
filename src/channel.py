@@ -18,11 +18,11 @@ class Channel:
 
         channel = Channel.youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
         
-        Channel.title = channel['items'][0]['snippet']['title']
-        Channel.video_count = channel['items'][0]['statistics']["videoCount"]
-        Channel.url = f"https://www.youtube.com/channel/{channel_id}"
-        Channel.view_count = channel['items'][0]['statistics']['viewCount']
-        Channel.subscribe_count = channel['items'][0]['statistics']["subscriberCount"]
+        self.title = channel['items'][0]['snippet']['title']
+        self.video_count = channel['items'][0]['statistics']["videoCount"]
+        self.url = f"https://www.youtube.com/channel/{channel_id}"
+        self.view_count = channel['items'][0]['statistics']['viewCount']
+        self.subscribe_count = channel['items'][0]['statistics']["subscriberCount"]
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
@@ -69,13 +69,13 @@ class Channel:
         return int(number) - int(other_count)
     
     def __lt__(self, other):
-        return self < other
+        return self.subscribe_count < other.subscribe_count
         
     def __gt__(self, other):
-        return self > other
+        return self.subscribe_count > other.subscribe_count
     
     def __ge__(self, other):
-        return self >= other
+        return self.subscribe_count >= other.subscribe_count
     
     def __le__(self, other):
-        return self <= other
+        return self.subscribe_count <= other.subscribe_count
