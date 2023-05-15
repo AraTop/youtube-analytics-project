@@ -1,5 +1,5 @@
 from src.channel import Channel
-import sys 
+
 if __name__ == '__main__':
     vdud = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
 
@@ -15,6 +15,6 @@ if __name__ == '__main__':
     # можем получить объект для работы с API вне класса
     print(Channel.get_service())
     # <googleapiclient.discovery.Resource object at 0x000002B1E54F9750>
-    sys.setrecursionlimit(10000)
+    
     # создаем файл 'vdud.json' в данными по каналу
     vdud.to_json('vdud.json')

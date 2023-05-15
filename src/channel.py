@@ -54,3 +54,28 @@ class Channel:
  
         with open(name_file, 'w' , encoding="utf-8") as f:
             json.dump(data, f,ensure_ascii=False, indent=2)
+
+    def __str__(self) -> str:
+        return f"<{self.title}> (<{self.url}>)"
+    
+    def __add__(self, other):
+        number = self.subscribe_count 
+        other_count = other.subscribe_count
+        return int(number) + int(other_count)
+    
+    def __sub__(self, other):
+        number = self.subscribe_count 
+        other_count = other.subscribe_count
+        return int(number) - int(other_count)
+    
+    def __lt__(self, other):
+        return self < other
+        
+    def __gt__(self, other):
+        return self > other
+    
+    def __ge__(self, other):
+        return self >= other
+    
+    def __le__(self, other):
+        return self <= other
