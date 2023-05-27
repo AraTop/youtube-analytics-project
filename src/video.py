@@ -11,15 +11,22 @@ class Video:
    count_likes = None
 
    def __init__(self, uid) -> None:
-      video_response = Video.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                       id=uid
-                                       ).execute() 
-      
-      self.id = uid
-      self.title = video_response['items'][0]['snippet']['title']
-      self.url = f"https://www.youtube.com/watch?v={uid}"
-      self.count_views = video_response['items'][0]['statistics']['viewCount']
-      self.count_likes = video_response['items'][0]['statistics']['likeCount']
+      try:
+         video_response = Video.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                          id=uid
+                                          ).execute() 
+         
+         self.id = uid
+         self.title = video_response['items'][0]['snippet']['title']
+         self.url = f"https://www.youtube.com/watch?v={uid}"
+         self.count_views = video_response['items'][0]['statistics']['viewCount']
+         self.count_likes = video_response['items'][0]['statistics']['likeCount']
+      except:
+         self.id = uid
+         self.title = None
+         self.url = None
+         self.count_views = None
+         self.count_likes = None
 
    def __str__(self) -> str:
         return f"{self.title}"

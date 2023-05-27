@@ -19,17 +19,16 @@ class PlayList:
    
    @property
    def total_duration(self):
-      duration_sum = timedelta()  
-      
-      # Получение списка видео в плейлисте
       playlist_items = []
       next_page_token = None
+
       while True:
+    # Получите список видео из плейлиста
          playlist_response = self.youtube.playlistItems().list(
-            part='contentDetails',
-            playlistId=self.playlist_id,
-            maxResults=50,
-            pageToken=next_page_token
+         part='contentDetails',
+         playlistId=self.playlist_id,
+         maxResults=50,  # Максимальное количество видео за один запрос
+         pageToken=next_page_token
          ).execute()
 
          playlist_items += playlist_response['items']
@@ -37,13 +36,29 @@ class PlayList:
 
          if not next_page_token:
             break
+      
+         video_response = self.youtube.videos().list(
+         part='contentDetails',
+         id=video_id
+         ).execute()
+
+         total_duration = timedelta()
 
       for item in playlist_items:
-         duration = item['duration']
-         duration_sum += int(duration)
-         
-      return duration_sum
+         video_id = item['contentDetails']['videoId']
 
+         # Получите информацию о видео
+         video_response = self.youtube.videos().list(
+         part='contentDetails',
+         id=video_id
+         ).execute()
+
+         duration = video_response['items'][0]['contentDetails']['duration']
+         duration = timedelta(seconds=int(duration[2:-1]))  # Преобразуйте строку в продолжительность времени
+         total_duration += duration
+
+      return total_duration
+   
    def show_best_video(self):
       playlist_items = []
       next_page_token = None
